@@ -30,7 +30,7 @@ public class HuggingFaceModelClient {
     @Builder.Default
     private final OkHttpClient client = new OkHttpClient();
 
-    public String call(String inputs,String negativePrompt) throws IOException {
+    public byte[] call(String inputs,String negativePrompt) throws IOException {
         //Check if inputs are not empty
         if (inputs.isEmpty()) {
             throw new IllegalArgumentException("Input string cannot be empty");
@@ -69,7 +69,7 @@ public class HuggingFaceModelClient {
         while (true) {
             try (Response response = client.newCall(request).execute()) {
                 if(response.isSuccessful()) {
-                    return response.body().string();
+                    return response.body().bytes();
                 } else if(response.code() == 503) {
                     System.out.println("----------> Response code was 503!!!!");
                 } else if (retries< maxRetries) {
