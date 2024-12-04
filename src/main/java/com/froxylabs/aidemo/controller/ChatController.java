@@ -44,6 +44,21 @@ public class ChatController {
         model.addAttribute("generation", new Generation());
         model.addAttribute("prompt", "");
 
+        String imageBase64="";
+        try {
+            File file = new File("src/main/resources/static/images/defaultImage.jpg");
+            BufferedImage bufferedImage = ImageIO.read(file);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "jpg", baos);
+            byte[] bytes = baos.toByteArray();
+            imageBase64 = Base64.getEncoder().encodeToString(bytes);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        model.addAttribute("imageBase64",imageBase64);
+
         return "index";
     }
 
