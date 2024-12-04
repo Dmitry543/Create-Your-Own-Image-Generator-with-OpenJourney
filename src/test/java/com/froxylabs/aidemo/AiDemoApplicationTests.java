@@ -1,4 +1,4 @@
-package com.hackernoon.aidemo;
+package com.froxylabs.aidemo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

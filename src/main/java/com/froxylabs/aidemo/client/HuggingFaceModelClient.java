@@ -1,4 +1,4 @@
-package com.hackernoon.aidemo.client;
+package com.froxylabs.aidemo.client;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;

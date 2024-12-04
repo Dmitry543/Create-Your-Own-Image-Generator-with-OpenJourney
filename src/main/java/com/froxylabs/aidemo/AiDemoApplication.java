@@ -1,4 +1,4 @@
-package com.hackernoon.aidemo;
+package com.froxylabs.aidemo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
