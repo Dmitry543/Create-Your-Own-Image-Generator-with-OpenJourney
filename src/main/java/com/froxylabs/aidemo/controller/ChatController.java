@@ -8,10 +8,13 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -58,6 +61,32 @@ public class ChatController {
         }
 
         model.addAttribute("imageBase64",imageBase64);
+
+        return "index";
+    }
+
+    @PostMapping(value = "/generate")
+    public String generateImage(@ModelAttribute Generation generation, Model model) throws IOException {
+        model.addAttribute("prompt",generation.getPrompt());
+        model.addAttribute("negativePrompt",generation.getNegativePrompt());
+
+        //Get the generation result as byte array from AI model
+        byte[] image = client.call(generation.getPrompt(),generation.getNegativePrompt());
+
+        //Saving the picture
+
+        //Create the object of type ByteArrayInputStream and read the byte array
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(image);
+        //Read the image to BufferedImage
+        BufferedImage newImage = ImageIO.read(inputStream);
+        //Create a new file and write an image to file
+        ImageIO.write(newImage,"jpg",new File("src/main/resources/static/images/outputImage.jpg"));
+
+        //Encoding to Base64 and sending to thymeleaf view
+        String imageBase64 = Base64.getEncoder().encodeToString(image);
+        model.addAttribute("imageBase64",imageBase64);
+        //save to entity our result
+        generation.setImage(imageBase64);
 
         return "index";
     }
